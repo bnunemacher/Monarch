@@ -62,10 +62,14 @@
             margin-top: 20px;
         }
 
-        .submit-button {
-            display: block;
-            width: 100%;
-            padding: 10px;
+        .button-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .action-button {
+            padding: 10px 20px;
             background-color: #ff9800;
             color: #fff;
             border: none;
@@ -74,8 +78,24 @@
             cursor: pointer;
         }
 
-        .submit-button:hover {
+        .action-button:hover {
             background-color: #e68900;
+        }
+
+        .email-button {
+            background-color: #007bff;
+        }
+
+        .email-button:hover {
+            background-color: #0056b3;
+        }
+
+        .text-button {
+            background-color: #28a745;
+        }
+
+        .text-button:hover {
+            background-color: #1e7e34;
         }
     </style>
 </head>
@@ -83,7 +103,7 @@
     <div class="form-container">
         <img src="Monarch.png" alt="Monarch Butterfly" />
         <h1>Monarch Salons by Angela</h1>
-        <form>
+        <form id="appointment-form">
             <div class="form-group">
                 <label for="client-name">Client Name:</label>
                 <input type="text" id="client-name" name="client-name" required>
@@ -107,7 +127,7 @@
                     <option value="hairstyling">Hair Styling</option>
                     <option value="color">Color</option>
                     <option value="perm">Perm</option>
-                    <option value="other">Other - See Notes</option>
+                    <option value="other">Other</option>
                 </select>
             </div>
 
@@ -135,7 +155,11 @@
                 <textarea id="notes" name="notes" rows="4"></textarea>
             </div>
 
-            <button type="submit" class="submit-button">Submit</button>
+            <div class="button-container">
+                <button type="button" class="action-button" onclick="window.print()">Print</button>
+                <button type="button" class="action-button email-button" onclick="sendEmail()">Email</button>
+                <button type="button" class="action-button text-button" onclick="sendText()">Text</button>
+            </div>
         </form>
 
         <div class="form-footer">
@@ -143,5 +167,17 @@
             <p>Contact: Monarch Salons by Angela, LLC<br>(480) 772-6978</p>
         </div>
     </div>
+
+    <script>
+        function sendEmail() {
+            alert('Email functionality is not implemented yet.');
+            // Placeholder for email-sending logic
+        }
+
+        function sendText() {
+            alert('Text functionality is not implemented yet.');
+            // Placeholder for text-sending logic
+        }
+    </script>
 </body>
 </html>
