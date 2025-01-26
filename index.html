@@ -131,12 +131,12 @@
 
             <div class="form-group">
                 <label for="appointment-date">Date of Appointment:</label>
-                <input type="date" id="appointment-date" name="appointment-date" required>
+                <input type="date" id="appointment-date" name="appointment-date" required value="${new Date().toISOString().split('T')[0]}">
             </div>
 
             <div class="form-group">
                 <label for="appointment-time">Time of Appointment:</label>
-                <input type="time" id="appointment-time" name="appointment-time" required>
+                <input type="time" id="appointment-time" name="appointment-time" required value="${new Date().toTimeString().split(' ')[0]}">
             </div>
 
             <div class="form-group">
@@ -190,42 +190,37 @@
 
     <script>
         function handlePrint() {
-            sendCopyToEmail();
+            sendFormattedCopy('print');
             window.print();
         }
 
         function sendEmail() {
-            const form = document.getElementById('appointment-form');
-            const formData = new FormData(form);
-            const mailtoLink = `mailto:?subject=Appointment Details&body=${encodeURIComponent(formatFormData(formData))}`;
-            sendCopyToEmail();
-            window.location.href = mailtoLink;
+            sendFormattedCopy('email');
         }
 
         function sendText() {
-            const form = document.getElementById('appointment-form');
-            const formData = new FormData(form);
-            const smsLink = `sms:?body=${encodeURIComponent(formatFormData(formData))}`;
-            sendCopyToEmail();
-            window.location.href = smsLink;
+            sendFormattedCopy('text');
         }
 
-        function sendCopyToEmail() {
+        function sendFormattedCopy(method) {
             const form = document.getElementById('appointment-form');
             const formData = new FormData(form);
-            const mailtoLink = `mailto:robert@oarsout.com?subject=Copy of Appointment Details&body=${encodeURIComponent(formatFormData(formData))}`;
-            const emailWindow = window.open(mailtoLink, '_blank');
-            if (emailWindow) {
-                emailWindow.close();
-            }
-        }
+            let formattedData = '<div style=\"font-family: Arial; margin: 20px; max-width: 600px;\">';
+            formattedData += '<h2 style=\"text-align: center;\">Appointment Details</h2>';
 
-        function formatFormData(formData) {
-            let formatted = '';
             for (let [key, value] of formData.entries()) {
-                formatted += `${key}: ${value}\n`;
+                formattedData += `<p><strong>${key}:</strong> ${value}</p>`;
             }
-            return formatted;
+
+            formattedData += '</div>';
+
+            if (method === 'email') {
+                const mailtoLink = `mailto:robert@oarsout.com?subject=Appointment Details&body=${encodeURIComponent(formattedData)}`;
+                window.location.href = mailtoLink;
+            } else if (method === 'text') {
+                const smsLink = `sms:?body=${encodeURIComponent(formattedData)}`;
+                window.location.href = smsLink;
+            }
         }
     </script>
 </body>
