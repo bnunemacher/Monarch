@@ -97,6 +97,26 @@
         .text-button:hover {
             background-color: #1e7e34;
         }
+
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: #fff;
+            }
+
+            .form-container {
+                width: 100%;
+                margin: 0;
+                padding: 10px;
+                border: none;
+                box-shadow: none;
+            }
+
+            .button-container {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -156,7 +176,7 @@
             </div>
 
             <div class="button-container">
-                <button type="button" class="action-button" onclick="window.print()">Print</button>
+                <button type="button" class="action-button" onclick="handlePrint()">Print</button>
                 <button type="button" class="action-button email-button" onclick="sendEmail()">Email</button>
                 <button type="button" class="action-button text-button" onclick="sendText()">Text</button>
             </div>
@@ -169,14 +189,43 @@
     </div>
 
     <script>
+        function handlePrint() {
+            sendCopyToEmail();
+            window.print();
+        }
+
         function sendEmail() {
-            alert('Email functionality is not implemented yet.');
-            // Placeholder for email-sending logic
+            const form = document.getElementById('appointment-form');
+            const formData = new FormData(form);
+            const mailtoLink = `mailto:?subject=Appointment Details&body=${encodeURIComponent(formatFormData(formData))}`;
+            sendCopyToEmail();
+            window.location.href = mailtoLink;
         }
 
         function sendText() {
-            alert('Text functionality is not implemented yet.');
-            // Placeholder for text-sending logic
+            const form = document.getElementById('appointment-form');
+            const formData = new FormData(form);
+            const smsLink = `sms:?body=${encodeURIComponent(formatFormData(formData))}`;
+            sendCopyToEmail();
+            window.location.href = smsLink;
+        }
+
+        function sendCopyToEmail() {
+            const form = document.getElementById('appointment-form');
+            const formData = new FormData(form);
+            const mailtoLink = `mailto:robert@oarsout.com?subject=Copy of Appointment Details&body=${encodeURIComponent(formatFormData(formData))}`;
+            const emailWindow = window.open(mailtoLink, '_blank');
+            if (emailWindow) {
+                emailWindow.close();
+            }
+        }
+
+        function formatFormData(formData) {
+            let formatted = '';
+            for (let [key, value] of formData.entries()) {
+                formatted += `${key}: ${value}\n`;
+            }
+            return formatted;
         }
     </script>
 </body>
